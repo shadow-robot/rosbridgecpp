@@ -11,6 +11,12 @@ else()
     add_compile_options(/W1)
 endif()
 
+set(Boost_DEBUG ON)
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(BOOST_INCLUDEDIR C:/local/boost_1_59_0/boost)
+set(BOOST_LIBRARYDIR C:/local/boost_1_59_0/lib64-msvc-14.0)
+
 add_library(simple-websocket-server INTERFACE)
 
 target_include_directories(simple-websocket-server INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -31,12 +37,12 @@ else()
     find_package(Boost 1.54.0 COMPONENTS system thread coroutine context REQUIRED)
     target_link_libraries(simple-websocket-server INTERFACE ${Boost_LIBRARIES})
     target_include_directories(simple-websocket-server INTERFACE ${Boost_INCLUDE_DIR})
-    if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
+ #   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9)
         target_compile_definitions(simple-websocket-server INTERFACE USE_BOOST_REGEX)
         find_package(Boost 1.54.0 COMPONENTS regex REQUIRED)
         target_link_libraries(simple-websocket-server INTERFACE ${Boost_LIBRARIES})
         target_include_directories(simple-websocket-server INTERFACE ${Boost_INCLUDE_DIR})
-    endif()
+ #   endif()
 endif()
 if(WIN32)
     target_link_libraries(simple-websocket-server INTERFACE ws2_32 wsock32)
@@ -45,6 +51,15 @@ endif()
 if(APPLE)
     set(OPENSSL_ROOT_DIR "/usr/local/opt/openssl")
 endif()
+
+# Link additional libraries needed for OpenSSL
+# see https://github.com/openssl/openssl/pull/1063/files
+#target_link_libraries(simple-websocket-server INTERFACE
+#    advapi32
+#    crypt32
+#	gdi32
+#    user32
+#	ws2_32)
 find_package(OpenSSL REQUIRED)
 target_link_libraries(simple-websocket-server INTERFACE ${OPENSSL_LIBRARIES})
 target_include_directories(simple-websocket-server INTERFACE ${OPENSSL_INCLUDE_DIR})

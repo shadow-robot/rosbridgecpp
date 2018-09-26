@@ -7,7 +7,7 @@
 
 #include <future>
 
-RosbridgeWsClient rbc("localhost:9090");
+RosbridgeWsClient rbc("192.168.2.1:9090");
 
 void advertiseServiceCallback(std::shared_ptr<WsClient::Connection> /*connection*/, std::shared_ptr<WsClient::Message> message)
 {
