@@ -19,6 +19,7 @@ include_directories("${CMAKE_CURRENT_SOURCE_DIR}/rapidjson/include")
 add_library(rosbridgecpp INTERFACE)
 target_include_directories(rosbridgecpp INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(rosbridgecpp INTERFACE simple-websocket-server)
+#target_sources(rosbridgecpp INTERFACE rosbridge_ws_client.hpp)
 
 # If Simple-WebSocket-Server is not a sub-project:
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}")

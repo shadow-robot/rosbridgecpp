@@ -59,19 +59,19 @@ void subscriberCallback(std::shared_ptr<WsClient::Connection> /*connection*/, st
 }
 
 int main() {
-  rbc.addClient("service_advertiser");
-  rbc.advertiseService("service_advertiser", "/zservice", "std_srvs/SetBool", advertiseServiceCallback);
+ // rbc.addClient("service_advertiser");
+ // rbc.advertiseService("service_advertiser", "/zservice", "std_srvs/SetBool", advertiseServiceCallback);
 
   rbc.addClient("topic_advertiser");
   rbc.advertise("topic_advertiser", "/ztopic", "std_msgs/String");
 
   rbc.addClient("topic_subscriber");
-  rbc.subscribe("topic_subscriber", "/ztopic", subscriberCallback);
+  rbc.subscribe("topic_subscriber", "/joint_states", subscriberCallback);
 
   // Test calling a service
-  rapidjson::Document document(rapidjson::kObjectType);
-  document.AddMember("data", true, document.GetAllocator());
-  rbc.callService("/zservice", callServiceCallback, document);
+  //rapidjson::Document document(rapidjson::kObjectType);
+  //document.AddMember("data", true, document.GetAllocator());
+  //rbc.callService("/zservice", callServiceCallback, document);
 
   // Test creating and stopping a publisher
   {
@@ -85,7 +85,7 @@ int main() {
     std::thread th(&publisherThread, std::ref(rbc), std::move(futureObj));
 
     // Wait for 10 sec
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    std::this_thread::sleep_for(std::chrono::seconds(50));
 
     std::cout << "Asking publisherThread to Stop" << std::endl;
 
@@ -102,4 +102,5 @@ int main() {
   rbc.removeClient("topic_subscriber");
 
   std::cout << "Program terminated" << std::endl;
+  std::this_thread::sleep_for(std::chrono::seconds(50));
 }
