@@ -47,7 +47,7 @@ void publisherThread(RosbridgeWsClient& rbc, std::future<void> futureObj)
   while (futureObj.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout)
   {
     rbc.publish("/ztopic", d);
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 
   std::cout << "publisherThread stops()" << std::endl;

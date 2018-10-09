@@ -87,7 +87,7 @@ class RosbridgeWsClient
     client_thread.detach();
 
     // This is to make sure that the thread got fully launched before we do anything to it (e.g. remove)
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::microseconds(100));
   }
 
 public:
