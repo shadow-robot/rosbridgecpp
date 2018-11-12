@@ -195,6 +195,35 @@ public:
 #endif
   }
 
+  void publish(const std::string& client_name, const std::string& topic, const rapidjson::Document& msg, const std::string& id = "")
+  {
+    std::unordered_map<std::string, std::shared_ptr<WsClient>>::iterator it = client_map.find(client_name);
+    if (it != client_map.end())
+    {
+      rapidjson::StringBuffer strbuf;
+      rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+      msg.Accept(writer);
+
+      std::string message = "\"op\":\"publish\", \"topic\":\"" + topic + "\", \"msg\":" + strbuf.GetString();
+
+      if (id.compare("") != 0)
+      {
+        message += ", \"id\":\"" + id + "\"";
+      }
+      message = "{" + message + "}";
+
+      auto send_stream = std::make_shared<WsClient::SendStream>();
+      *send_stream << message;
+      it->second->connection->send(send_stream);
+    }
+#ifdef DEBUG
+    else
+    {
+      std::cerr << client_name << "has not been created" << std::endl;
+    }
+#endif
+  }
+
   void publish(const std::string& topic, const rapidjson::Document& msg, const std::string& id = "")
   {
     rapidjson::StringBuffer strbuf;
