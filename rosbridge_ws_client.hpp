@@ -172,7 +172,7 @@ public:
 #endif
   }
 
-  void advertise(const std::string& client_name, const std::string& topic, const std::string& type, const std::string& id = "")
+  void advertise(const std::string& client_name, const std::string& topic, const std::string& type, const std::string& id = "", int queue_size=100, bool tcp_nodelay=false)
   {
     std::unordered_map<std::string, std::shared_ptr<WsClient>>::iterator it = client_map.find(client_name);
     if (it != client_map.end())
@@ -183,6 +183,9 @@ public:
       {
         message += ", \"id\":\"" + id + "\"";
       }
+      message += ", \"queue_size\":\"" + std::to_string(queue_size) + "\"";
+      message += ", \"tcp_nodelay\":";
+      message += ((tcp_nodelay) ? "true" : "false");
       message = "{" + message + "}";
 
       start(client_name, it->second, std::move(message));
