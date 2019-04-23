@@ -344,6 +344,8 @@ namespace SimpleWeb {
     /// If you have your own asio::io_service, store its pointer here before running start().
     std::shared_ptr<asio::io_service> io_service;
     std::shared_ptr<Connection> connection;
+    /// Set to true if connection has been establised.
+    bool connection_established = false;
 
   protected:
     bool internal_io_service = false;
@@ -710,17 +712,22 @@ namespace SimpleWeb {
             if(!lock)
               return;
             if(!ec) {
+              this->connection_established = true;
               asio::ip::tcp::no_delay option(true);
               connection->socket->set_option(option);
 
               this->handshake(connection);
             }
-            else
+            else {
+              this->connection_established = false;
               this->connection_error(connection, ec);
+            }
           });
         }
-        else
+        else {
+          this->connection_established = false;
           this->connection_error(connection, ec);
+        }
       });
     }
   };

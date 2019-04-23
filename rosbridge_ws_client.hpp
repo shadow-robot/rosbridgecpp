@@ -354,6 +354,16 @@ public:
     start("service_response_client", service_response_client, std::move(message));
   }
 
+  bool isClientConnected(const std::string& client_name)
+  {
+	  std::unordered_map<std::string, std::shared_ptr<WsClient>>::iterator it = client_map.find(client_name);
+	  if (it != client_map.end())
+	  {
+		return it->second->connection_established;
+	  }
+	  return false;
+  }
+
   void callService(const std::string& service, const OnMessage& callback, const rapidjson::Document& args = {}, const std::string& id = "", int fragment_size = -1, const std::string& compression = "")
   {
     std::string message = "\"op\":\"call_service\", \"service\":\"" + service + "\"";
