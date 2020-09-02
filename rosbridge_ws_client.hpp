@@ -183,7 +183,7 @@ public:
       {
         message += ", \"id\":\"" + id + "\"";
       }
-      message += ", \"queue_size\":\"" + std::to_string(queue_size) + "\"";
+      message += ", \"queue_size\":" + std::to_string(queue_size);
       message += ", \"tcp_nodelay\":";
       message += ((tcp_nodelay) ? "true" : "false");
       message = "{" + message + "}";
