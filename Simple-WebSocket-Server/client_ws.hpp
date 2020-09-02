@@ -392,7 +392,7 @@ namespace SimpleWeb {
 
       request << "GET " << path << " HTTP/1.1"
               << "\r\n";
-      request << "Host: " << host << "\r\n";
+      request << "Host: " << host << ":" << port <<"\r\n";
       request << "Upgrade: websocket\r\n";
       request << "Connection: Upgrade\r\n";
 
