@@ -26,4 +26,4 @@ https://sourceforge.net/projects/boost/files/boost-binaries/1.59.0/
 
 Install OpenSSL binaries
 https://slproweb.com/products/Win32OpenSSL.html
-Win64 OpenSSL v1.0.2p
+Win64 OpenSSL v1.1.1k
