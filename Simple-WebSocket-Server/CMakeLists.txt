@@ -45,6 +45,8 @@ else()
  #   endif()
 endif()
 if(WIN32)
+    set(OPENSSL_ROOT_DIR "C:/OpenSSL-Win32" )
+    set(OPENSSL_INCLUDE_DIR "${OPENSSL_ROOT_DIR}/include")
     target_link_libraries(simple-websocket-server INTERFACE ws2_32 wsock32)
 endif()
 
@@ -61,6 +63,9 @@ endif()
 #    user32
 #	ws2_32)
 find_package(OpenSSL REQUIRED)
+message(OPENSSL_LIBRARIES="${OPENSSL_LIBRARIES}")
+message(OPENSSL_INCLUDE_DIR="${OPENSSL_INCLUDE_DIR}")
+
 target_link_libraries(simple-websocket-server INTERFACE ${OPENSSL_LIBRARIES})
 target_include_directories(simple-websocket-server INTERFACE ${OPENSSL_INCLUDE_DIR})
 
